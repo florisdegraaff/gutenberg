@@ -34,7 +34,6 @@ const MediaReplaceFlow = ( {
 	onError,
 	name = __( 'Replace' ),
 } ) => {
-	const [ showURLInput, setShowURLInput ] = useState( false );
 	const [ showEditURLInput, setShowEditURLInput ] = useState( false );
 	const [ mediaURLValue, setMediaURLValue ] = useState( mediaURL );
 	const mediaUpload = useSelect( ( select ) => {
@@ -170,11 +169,13 @@ const MediaReplaceFlow = ( {
 						</MediaUploadCheck>
 					</NavigableMenu>
 					{ onSelectURL && (
-            <div className="block-editor-media-flow__url-input">
-  						<span className="block-editor-media-replace-flow__image-url-label">{ __( ' Current media URL:' ) }</span>
-						  { urlInputUIContent }
-					  </div>
-          ) }
+						<div className="block-editor-media-flow__url-input">
+							<span className="block-editor-media-replace-flow__image-url-label">
+								{ __( ' Current media URL:' ) }
+							</span>
+							{ urlInputUIContent }
+						</div>
+					) }
 				</>
 			) }
 		/>
