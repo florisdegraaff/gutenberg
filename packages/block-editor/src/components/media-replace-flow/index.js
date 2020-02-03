@@ -13,14 +13,7 @@ import {
 	Dropdown,
 	withNotices,
 } from '@wordpress/components';
-import {
-	LEFT,
-	RIGHT,
-	UP,
-	DOWN,
-	BACKSPACE,
-	ENTER,
-} from '@wordpress/keycodes';
+import { LEFT, RIGHT, UP, DOWN, BACKSPACE, ENTER } from '@wordpress/keycodes';
 import { useSelect } from '@wordpress/data';
 import { compose } from '@wordpress/compose';
 
@@ -32,17 +25,16 @@ import MediaUploadCheck from '../media-upload/check';
 import LinkEditor from '../url-popover/link-editor';
 import LinkViewer from '../url-popover/link-viewer';
 
-const MediaReplaceFlow = (
-	{
-		mediaURL,
-		allowedTypes,
-		accept,
-		onSelect,
-		onSelectURL,
-		onError,
-		name = __( 'Replace' ),
-	}
-) => {
+const MediaReplaceFlow = ( {
+	mediaURL,
+	allowedTypes,
+	accept,
+	onSelect,
+	onSelectURL,
+	onError,
+	name = __( 'Replace' ),
+} ) => {
+	const [ showURLInput, setShowURLInput ] = useState( false );
 	const [ showEditURLInput, setShowEditURLInput ] = useState( false );
 	const [ mediaURLValue, setMediaURLValue ] = useState( mediaURL );
 	const mediaUpload = useSelect( ( select ) => {
@@ -55,7 +47,11 @@ const MediaReplaceFlow = (
 	};
 
 	const stopPropagationRelevantKeys = ( event ) => {
-		if ( [ LEFT, DOWN, RIGHT, UP, BACKSPACE, ENTER ].indexOf( event.keyCode ) > -1 ) {
+		if (
+			[ LEFT, DOWN, RIGHT, UP, BACKSPACE, ENTER ].indexOf(
+				event.keyCode
+			) > -1
+		) {
 			// Stop the key event from propagating up to ObserveTyping.startTypingInTextField.
 			event.stopPropagation();
 		}
@@ -103,7 +99,7 @@ const MediaReplaceFlow = (
 				value={ mediaURLValue }
 				isFullWidthInput={ true }
 				hasInputBorder={ true }
-				onChangeInputValue={ ( url ) => ( setMediaURLValue( url ) ) }
+				onChangeInputValue={ ( url ) => setMediaURLValue( url ) }
 				onSubmit={ ( event ) => {
 					event.preventDefault();
 					selectURL( mediaURLValue );
@@ -117,7 +113,9 @@ const MediaReplaceFlow = (
 				isFullWidth={ true }
 				className="block-editor-media-replace-flow__link-viewer"
 				url={ mediaURLValue }
-				onEditLinkClick={ () => ( setShowEditURLInput( ! showEditURLInput ) ) }
+				onEditLinkClick={ () =>
+					setShowEditURLInput( ! showEditURLInput )
+				}
 			/>
 		);
 	}
@@ -145,10 +143,7 @@ const MediaReplaceFlow = (
 							onSelect={ ( media ) => selectMedia( media ) }
 							allowedTypes={ allowedTypes }
 							render={ ( { open } ) => (
-								<MenuItem
-									icon="admin-media"
-									onClick={ open }
-								>
+								<MenuItem icon="admin-media" onClick={ open }>
 									{ __( 'Open Media Library' ) }
 								</MenuItem>
 							) }
@@ -174,16 +169,16 @@ const MediaReplaceFlow = (
 							/>
 						</MediaUploadCheck>
 					</NavigableMenu>
-					{ onSelectURL && <div className="block-editor-media-flow__url-input">
-						<span className="block-editor-media-replace-flow__image-url-label">{ __( ' Current media URL:' ) }</span>
-						{ urlInputUIContent }
-					</div> }
+					{ onSelectURL && (
+            <div className="block-editor-media-flow__url-input">
+  						<span className="block-editor-media-replace-flow__image-url-label">{ __( ' Current media URL:' ) }</span>
+						  { urlInputUIContent }
+					  </div>
+          ) }
 				</>
 			) }
 		/>
 	);
 };
 
-export default compose(
-	withNotices,
-)( MediaReplaceFlow );
+export default compose( withNotices )( MediaReplaceFlow );
